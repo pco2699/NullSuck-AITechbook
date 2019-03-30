@@ -271,6 +271,8 @@ Pod	コンテナのことを指す
 
 ==={kubernetes} Kubernetes関連のファイル設定
 では、実際に、構成を元に、Kubernetes関連のファイルを作成していきましょう。
+#@# 点が多め？
+#@# では実際に、構成を元にKubernetes関連の
 Kubernetesは、@<code>{kubectl}というコマンドラインツールで、設定を行うことも可能です。
 しかし、同じ環境を作るのに、毎回コマンドをたたくのだと不便です。
 そのため、ymlファイルに保存しておき、適用する、というのがよく行われる手段です。
@@ -423,6 +425,7 @@ spec:
 === GKE周りの設定
 実際に、GKEでKubernetesのClusterを作成してみましょう。
 Clusterとは、さきほど、定義したIngressやService、Podなどが載る基盤です。
+#@# Clusterとは、さきほど定義したIngress (点が多いかも)
 
 次のコマンドでClusterを作ることができます。
 //cmd{
@@ -437,6 +440,7 @@ $ gcloud container clusters create nullsuck --num-nodes 2
 ここから、@<tt>{kubectl}というKubernetes用のcliツールでKubernetesを操作します。
 
 まず、GKEから認証情報を取得してきて、あたかもローカルから@<tt>{kubectl}を用いて
+#@# あたかもが一瞬迷う。いらないかも
 Kubernetesが操作できる環境にします。
 
 //cmd{
@@ -478,6 +482,8 @@ $ gcloud beta sql instances create nullsuck-db
                      --tier=db-f1-micro --activation-policy=ALWAYS
 //}
 今回は、DBインスタンス名をnullsuck-db インスタンスタイプは一番、小さいdb-f1-microを利用します。
+#@# 今回は、DBインスタンス名をnullsuck-db、インスタンスタイプは一番小さいdb-f1-microを利用します。
+#@# （点の位置感）
 
 Cloud SQLは、第一世代と第二世代のインスタンスがあります。
 GKEからプロキシで接続するためには、第二世代のインスタンスを利用する必要があります。
@@ -494,6 +500,7 @@ $ gcloud sql instances set-root-password nullsuck-db
 まずはCloud SQLからアクセスできるように、コンソール画面からサービスアカウントを設定します。
 
 //image[creating_service][Cloud SQLのアカウント設定 1.]
+#@# でかくて下のほうがページ表記の方にはみ出てる
 //image[creating_service2][Cloud SQLのアカウント設定 2.]
 //image[creating_service3][Cloud SQLのアカウント設定 3.]
 //image[creating_service4][Cloud SQLのアカウント設定 4.]
@@ -624,6 +631,7 @@ workflows:
 
  * Kubernetesの設定ファイルをすべてひとつのファイルにまとめている
  * 前の手順で設定した環境変数に変換するため @<code>{envsbst} でymlファイルの変換を行っている。
+ #@# 行っている。 → 行っている
 
 このファイルを実際にコミットして、CircleCIが動くことを確認できれば、デプロイの作業はすべて完了です。
 お疲れさまでした。
@@ -633,12 +641,14 @@ workflows:
 ===[column] コンテナ開発で困った！あるある
 
 サンプルアプリｄえコンテナを使って開発していて実際に困ったことをまとめてみました。
+#@# dえ → で
 
 ==== 外からアクセスできない！
 ホスト名の指定を@<tt>{localhost}にしていると外からアクセスできません。
 @<tt>{0.0.0.0}にするとアクセスできます。
 
 ==== ブラウザからAPIにたたこうとするけど、CORSエラーでるし、そもそも公開していない！
+#@# APIにたたこう → APIをたたこう
 Nuxt.jsだとプロキシの機能があるので、それを使いましょう。
 これで、ブラウザ -> Nuxt.js -> APIで通信されます。
 
