@@ -406,8 +406,63 @@ df.head()
 
 //image[analytics20][新しい列が追加されたデータセット]
 
+=== 正規化
+今回はワインのスコアをレーダーチャートによってアプリ上で可視化します。
+レーダーチャートは、複数の評価軸がある場合に適した可視化方法です。
+レーダーチャート作成のポイントは@<kw>{数値の単位を揃えること}です。
 
+そのために、説明変数として用いるデータを@<kw>{正規化,Normalization}することによって、
+どの評価軸も@<kw>{最小値0, 最大値1}の数値に変換します。
 
+機械学習をおこなうためのデータセットは、数値の単位がバラバラであったり、
+数値の大きさが極端に異なっていることは避ける必要があります。
+
+ロジスティック回帰では、データのスケールを変換する方法として、
+@<kw>{標準化,Standardization}という方法を使うケースが多い印象です。
+
+また、適切な予測モデルを構築する（過学習を防ぐ）ために、
+@<kw>{正則化,Regularization}（正規化ではない）という方法もあります。
+
+//list[Normalization][正規化][python]{
+  # データ前処理に必要なライブラリ
+  from sklearn import preprocessing
+
+  # インスタンスの作成
+  mmscaler = preprocessing.MinMaxScaler()
+
+  # 説明変数の最大・最小を計算
+  mmscaler.fit(df)
+  df_mms = pd.DataFrame(mmscaler.transform(df))
+
+  # 統計量を見ることで、最小0最大1に変換されているか確認
+  df_mms.describe()
+
+//}
+
+//image[analytics21][正規化されたデータセット]
+
+//list[Normalization02][列名変換][python]{
+  # スケール変換によって変わってしまった列名を直す
+  df = df_mms.rename(columns={
+      0: 'fixed acidity',
+      1: 'volatile acidity',
+      2: 'citric acid',
+      3: 'residual sugar',
+      4: 'chlorides',
+      5: 'free sulfur dioxide',
+      6: 'total sulfur dioxide',
+      7: 'density',
+      8: 'pH',
+      9: 'sulphates',
+      10: 'alcohol',
+      11: 'quality',
+      12: 'delicious'
+  })
+  # 先頭行を表示し、正しく変換されているか確認
+  df.head()
+//}
+
+//image[analytics22][列名修正後のデータセット]
 
 
 == データ分析／機械学習
@@ -441,35 +496,6 @@ AorBorCのように、3つ以上に分けることによって解決する問題
 
 それでは、ロジスティック回帰について少し理解できたところで、
 コードを書いて機械学習用のデータセットを作っていきましょう。
-
-=== 正規化
-今回はワインのスコアをレーダーチャートによってアプリ上で可視化します。
-レーダーチャートは、複数の評価軸がある場合に適した可視化方法です。
-レーダーチャート作成のポイントは@<kw>{数値の単位を揃えること}です。
-
-そのために、説明変数として用いるデータを@<kw>{正規化,Normalization}することによって、
-どの評価軸も@<kw>{最小値0, 最大値1}の数値に変換します。
-
-//list[Normalization][正規化][python]{
-  # 可視化ライブラリのインポート
-  import matplotlib.pyplot as plt
-  import seaborn as sns
-
-  # matplotlibによる可視化
-  plt.hist(df['quality'], bins=10 )
-
-//}
-
-
-
-機械学習をおこなうためのデータセットは、数値の単位がバラバラであったり、
-数値の大きさが極端に異なっていることは避ける必要があるからです。
-
-ロジスティック回帰では、データのスケールを変換する方法として、
-@<kw>{標準化,Standardization}という方法を使うケースが多い印象です。
-
-また、適切な予測モデルを構築する（過学習を防ぐ）ために、
-@<kw>{正則化,Regularization}（正規化ではない）という方法もあります。
 
 === 相関関係
 回帰分析は相関関係がベースになっている分析手法です。
