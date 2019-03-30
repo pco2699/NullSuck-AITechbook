@@ -678,16 +678,22 @@ pythonによるモデリングはscikit-learnを使えば、基本的には5行�
 //image[analytics26][予測精度]
 
 === 出力
-システム化するために、Pickleを使ってモデルを出力します。
-PickleはPython標準ライブラリに含まれているモジュールです。
+最後に構築したモデルをPythonの標準ライブラリである@<kw>{picke,ピックル}
+モジュールを使ってモデルをdumpします。
 
 //list[modeling][pickleを使ってモデルをdumpする][python]{
   # pickleのインポート
   import pickle
-  # pickleでモデルをdumpする
-  filename = 'nullsuckAi_model.sav'
-  pickle.dump(model, open(filename, 'wb'))
+  # モデルのファイル名を指定
+  filename = 'nullsuckAi_01model.sav'
+  # モデルをdumpする
+  pickle.dump(log_model, open(filename, 'wb'))
 //}
+
+dumpされたモデルファイルが下記の通り保存されていれば完了です。
+
+//image[analytics27][dumpされたファイルはworkspaceにある]
+
 
 == 画面設計
 Webアプリケーション開発に進む前に、画面設計に挑戦してみましょう。
