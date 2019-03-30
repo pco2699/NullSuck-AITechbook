@@ -163,7 +163,9 @@ if __name__ == '__main__':
 flaskと違って、関数の中でreturnを書かなくてよいというのが特徴です。（falcon譲り）
 
 このapp.pyを動かすには、Pipenvで作られた仮想環境で動かす必要があります。
+#@# このapp.pyは、Pipenvで作られた仮想環境上で動きます。 (動かすがくどいかもと感じた)
 Pipenv作られた仮想環境で動かすためには、次の２つのやり方があります。
+#@# Pipenv作られた → Pipenvで作られた
 
  1. @<code>{pipenv shell}で仮想環境のコンソールを立ち上げて@<code>{python} コマンドをたたく 
  2. @<code>{Pipfile} のscriptsにコマンドを書いて @<code>{pipenv run [コマンド定義名]}で動かす
@@ -181,6 +183,7 @@ INFO: Uvicorn running on http://127.0.0.1:5042 （Press CTRL+C to quit）
 //}
 
 実際にcurlコマンドを叩いて確認してみましょう
+#@# みましょう → みましょう。
 
 //cmd{
 $ curl localhost:5042/hello                         
@@ -188,6 +191,7 @@ $ curl localhost:5042/hello
 //}
 
 無事にHelloと帰ってきてたら無事に動いています！
+#@# 帰ってきたら → 返ってきたら （かな？）
 
 
 == ハンドラを実装しよう
@@ -215,6 +219,7 @@ api.add_route('/api/predict', PredictionResource)
 //}
 
 @<code>{api.add_route}でルートを定義できます。　第二引数には、関数かクラスを定義して
+#@# 定義できます。　第二引数には → 定義できます。第二引数には (。の後に空白)
 該当のルーティングに対応する処理を指定できます。
 
 === ハンドラを実装しよう
@@ -248,6 +253,7 @@ class PredictionResource:
 == 機械学習のモデルを組み込もう
 それではいよいよ機械学習のモデルをAPIに組み込んでみましょう。
 といってもやることはシンプルでうｓ。
+#@# シンプルです。
 前章で@hidefkn氏に作ってもらったsavファイルをAPIに置いてPOSTデータを食わせます。
 
 === 機械学習に必要なライブラリをインストールする
@@ -281,6 +287,7 @@ class PredictionService:
         # と同じpandasのdataframe型に変換する
         df = DataFrame.from_dict(PredictionService.convert_dict(data),
                                                                  orient='columns')
+#@# pdfだと「columns')」がはみ出てる
         # 上記で指定したmodelファイルを呼び出し
         predict = PredictionService.model.predict([df['value']])
         # numpyの型で帰ってくるのをfloatに変換
@@ -302,6 +309,10 @@ class PredictionService:
 
  * pickleで保存されているモデルを呼び出し
  * POSTデータをpandasのデータフレームの形式に変換してpickleから復元したモデルで予測
+
+#@#
+#@# 以上で、API部分は完成です。的ななにかしらの締めが欲しい。
+#@#
 
 #@# == DBモデルを実装しよう
 #@# では、DBのモデルをPythonで実装しましょう。
