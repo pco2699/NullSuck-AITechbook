@@ -162,8 +162,8 @@ if __name__ == '__main__':
 
 flaskと違って、関数の中でreturnを書かなくてよいというのが特徴です。（falcon譲り）
 
-このapp.pyを動かすには、Pipenvで作られた仮想環境で動かす必要があります。
-Pipenv作られた仮想環境で動かすためには、次の２つのやり方があります。
+このapp.pyを動かすには、Pipenvで作られた仮想環境で動きます。
+Pipenvで作られた仮想環境で動かすためには、次の２つのやり方があります。
 
  1. @<code>{pipenv shell}で仮想環境のコンソールを立ち上げて@<code>{python} コマンドをたたく 
  2. @<code>{Pipfile} のscriptsにコマンドを書いて @<code>{pipenv run [コマンド定義名]}で動かす
@@ -180,14 +180,14 @@ INFO: Waiting for application startup.
 INFO: Uvicorn running on http://127.0.0.1:5042 （Press CTRL+C to quit）
 //}
 
-実際にcurlコマンドを叩いて確認してみましょう
+実際にcurlコマンドを叩いて確認してみましょう。
 
 //cmd{
 $ curl localhost:5042/hello                         
 {"hello": "hello"}⏎
 //}
 
-無事にHelloと帰ってきてたら無事に動いています！
+無事にHelloと返ってきてたら無事に動いています！
 
 
 == ハンドラを実装しよう
@@ -197,6 +197,9 @@ $ curl localhost:5042/hello
 //image[handler][エンドポイント設計]
 
 このルーティングを実際に作っていきましょう。
+
+ワインの属性をDBから取得するDB設定やAPI部分は今回はスペースの都合上、説明を割愛させていただきます。
+興味のある方はGitHubの実装を見てみてください。
 
 === ルーティングを定義しよう
 まずは、ルーティングを定義します。
@@ -214,7 +217,7 @@ api.add_route('/api/wine_attributes', WineAttributeResource)
 api.add_route('/api/predict', PredictionResource)
 //}
 
-@<code>{api.add_route}でルートを定義できます。　第二引数には、関数かクラスを定義して
+@<code>{api.add_route}でルートを定義できます。第二引数には、関数かクラスを定義して
 該当のルーティングに対応する処理を指定できます。
 
 === ハンドラを実装しよう
@@ -247,7 +250,7 @@ class PredictionResource:
 
 == 機械学習のモデルを組み込もう
 それではいよいよ機械学習のモデルをAPIに組み込んでみましょう。
-といってもやることはシンプルでうｓ。
+といってもやることはシンプルです。
 前章で@hidefkn氏に作ってもらったsavファイルをAPIに置いてPOSTデータを食わせます。
 
 === 機械学習に必要なライブラリをインストールする
@@ -280,7 +283,7 @@ class PredictionService:
         # data(POSTされてきたデータ)を元のモデル作成時
         # と同じpandasのdataframe型に変換する
         df = DataFrame.from_dict(PredictionService.convert_dict(data),
-                                                                 orient='columns')
+                                                        orient='columns')
         # 上記で指定したmodelファイルを呼び出し
         predict = PredictionService.model.predict([df['value']])
         # numpyの型で帰ってくるのをfloatに変換
@@ -302,6 +305,8 @@ class PredictionService:
 
  * pickleで保存されているモデルを呼び出し
  * POSTデータをpandasのデータフレームの形式に変換してpickleから復元したモデルで予測
+
+以上でAPI部分は完成です。
 
 #@# == DBモデルを実装しよう
 #@# では、DBのモデルをPythonで実装しましょう。
