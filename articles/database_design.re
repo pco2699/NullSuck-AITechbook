@@ -206,23 +206,23 @@ jupyter notebookから、列名をコピーしてスプレッドシートに貼�
 
 //image[analytics06][翻訳関数を挿入][scale=0.5]
 
-//image[analytics07][日本誤訳が表示された][scale=0.5]
+//image[analytics07][日本語訳が表示された][scale=0.5]
 
 //table[label][列名の意味]{
-属性（単位）  英語表記
+属性（単位）	英語表記
 ------------------------------
-ワインの味（グレード）  quality; from 0 (very bad) to 10 (excellent)
-酒石酸濃度（g/dm3）  fixed acidity (g(tartaric acid)/dm3)
-酢酸濃度（g/dm3）  volatile acidity (g(acetic acid)/dm3)
-クエン酸濃度（g/dm3）  citric acid (g/dm3)
-残留糖分濃度（g/dm3）  residual sugar (g/dm3)
-塩化ナトリウム濃度（g/dm3）  chlorides (g(sodium chloride)/dm3)
-遊離亜硫酸濃度（mg/dm3）  free sulfur dioxide (mg/dm3)
-総亜硫酸濃度（mg/dm3）  total sulfur dioxide (mg/dm3)
-密度（g/dm3）  density (g/dm3)
-pH  pH
-硫酸カリウム濃度（g/dm3）  sulphates (g(potassium sulphate)/dm3)
-アルコール度数（% vol.）  alcohol (% vol.)
+ワインの味（グレード）	quality; from 0 (very bad) to 10 (excellent)
+酒石酸濃度（g/dm3）	fixed acidity (g(tartaric acid)/dm3)
+酢酸濃度（g/dm3）	volatile acidity (g(acetic acid)/dm3)
+クエン酸濃度（g/dm3）	citric acid (g/dm3)
+残留糖分濃度（g/dm3）	residual sugar (g/dm3)
+塩化ナトリウム濃度（g/dm3）	chlorides (g(sodium chloride)/dm3)
+遊離亜硫酸濃度（mg/dm3）	free sulfur dioxide (mg/dm3)
+総亜硫酸濃度（mg/dm3）	total sulfur dioxide (mg/dm3)
+密度（g/dm3）	density (g/dm3)
+pH	pH
+硫酸カリウム濃度（g/dm3）	sulphates (g(potassium sulphate)/dm3)
+アルコール度数（% vol.）	alcohol (% vol.)
 //}
 
 11項目の化学測定指標と、ワインの評価スコアが存在することがわかりました。
@@ -592,7 +592,7 @@ A or B or C のように、3つ以上に分けることによって解決する�
   sns.heatmap(df_corr, vmax=1, vmin=-1, center=0)
 //}
 
-//image[analytics24][今回はヒートマップで全体感のみ把握]
+//image[analytics24][今回はヒートマップで全体感のみ把握][scale=0.5]
 
 ====[column] 要因がわかるだけでは、世の中は何も変わらない
 データ分析をするときに、AとBの相関関係を発見することはとても面白いです。
@@ -713,7 +713,7 @@ Webアプリケーション開発に進む前に、画面設計に挑戦して�
 
 今回、最小の画面枚数は@<kw>{データ入力画面と予測結果表示画面の2つ}です。
 
-//image[ui11][アプリのAI化]
+//image[ui11][アプリのAI化][scale=0.8]
 
 === 最小の技術で最速のUI設計
 最短経路のUI設計のポイントは3つです。
@@ -731,13 +731,16 @@ Webアプリケーション開発に進む前に、画面設計に挑戦して�
 ==== 見本の入手
 第2章で芝麻信用について詳しく書いてきたので、芝麻信用のUIを見本にしましょう。
 ヘッダーがあり、メインメニューにスコアをレーダーチャートによって可視化しています。
+
 ==== 要素の絞り込み
 芝麻信用のUIから3要素を取り入れることにしました。固定ヘッダーとスコア表示、
 最後に項目の詳細が書いてある項目カードです。
+
 ==== キラー画面作成
 今回のアプリで必要な画面数は2つです。画面を作成する際は、
 ユーザーに最もインパクトを残したい画面から作るようにしています。
 予測結果をユーザーにぬるさくで表示させたいので、予測結果表示画面から作ります。
+
 ==== デザインキットの有効活用
 AdobeXDは無償版が提供されています。さらに、無料のデザインキットが提供されているため個人開発に最適です。
 AdobeXDはチュートリアルが豊富であるため、本書では詳しい解説は割愛します。

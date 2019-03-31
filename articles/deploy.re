@@ -72,7 +72,7 @@ COPY ./package.json ./yarn.lock ./ // 3. 環境に必要なライブラリを指
 RUN yarn install // 4. 必要なライブラリのインストール
 COPY . .
 
-RUN yarn run build 
+RUN yarn run build
 
 CMD ["yarn", "run", "start"] // 5. 本番環境時に動作させたいコマンドを指定
 //}
@@ -82,7 +82,7 @@ FROM python:3.6-alpine // 1. FROMで今回の環境に合うイメージを設�
 
 RUN apk --no-cache --update-cache add gcc gfortran (略) && \
     mkdir /app && \
-    pip install pipenv 
+    pip install pipenv
     // 2. ディレクトリを作成 & 環境に必要なライブラリを指定しているファイルのコピー
 
 WORKDIR /app
@@ -315,7 +315,7 @@ metadata:
 spec:
   # ここで何個 Podを複製するか決める。
   # 今回はコストを抑えたいので1で。
-  replicas: 1 
+  replicas: 1
   selector:
     matchLabels: # 後のcontainersのnameと合わせる
       app: app
@@ -325,10 +325,10 @@ spec:
         app: app
     spec:
       # コンテナの情報を記載する。docker-composeで書いた内容とほぼ同じでOK
-      containers: 
+      containers:
       - name: app
         # GCRでpushした内容を指定
-        image: asia.gcr.io/nullsuck/app:latest 
+        image: asia.gcr.io/nullsuck/app:latest
         ports:
         - containerPort: 3000
         env:
@@ -363,7 +363,7 @@ spec:
                 name: cloudsql-db-password
                 key: password
       # APIからCloud SQLにアクセスできるように専用のProxyをPodとして用意
-      - name: cloudsql-proxy 
+      - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy",
                   "-instances=nullsuck:asia-northeast1:nullsuck-db=tcp:3306",
@@ -401,7 +401,7 @@ kind: Service # Serviceを指定
 metadata:
   name: app-svc
 spec:
-  type: NodePort 
+  type: NodePort
   selector:
     app: app # deploymentのappと内容を合わせる
   ports: # 公開するポートに合わせる
@@ -426,8 +426,8 @@ spec:
         backend:
           # appのServiceを指定
           serviceName: app-svc
-          # appのServiceのポートと同じものを指定 
-          servicePort: 3000 
+          # appのServiceのポートと同じものを指定
+          servicePort: 3000
 //}
 
 これでKubernetes関連のファイルが全て作成できました。
@@ -507,12 +507,13 @@ $ gcloud sql instances set-root-password nullsuck-db
 次に、このCloud SQLをGKEから接続できるようにするためCredientialsを設定しましょう。
 まずはCloud SQLからアクセスできるように、コンソール画面からサービスアカウントを設定します。
 
-//image[creating_service][Cloud SQLのアカウント設定 1.][scale=0.5]
-//image[creating_service2][Cloud SQLのアカウント設定 2.]
-//image[creating_service3][Cloud SQLのアカウント設定 3.][scale=0.8]
-//image[creating_service4][Cloud SQLのアカウント設定 4.][scale=0.7]
-//image[creating_service5][Cloud SQLのアカウント設定 5.][scale=0.8]
-//image[creating_service6][Cloud SQLのアカウント設定 6.][scale=0.8]
+具体的には、以下の手順コンソール画面からサービスアカウントを設定します。
+
+　1. IAMと管理 -> サービスアカウントを選択
+　2. ページ上の「＋サービスアカウントを作成」をクリック
+　3. サービスアカウント名を入力。自分の好きな名前にしましょう。
+　4. 役割は「Cloud SQL 管理者」を選択
+　5. キーの作成（オプション）からJSONのキーを作成
 
 この手順で取得したjsonファイルをGKEのSecretsに設定します。@<fn>{gke_secrets}
 
@@ -608,7 +609,7 @@ jobs:
           name: Setup Google Cloud SDK
           command : |
             # あとで利用するenvsubstコマンドのため導入
-            apt-get install -qq -y gettext 
+            apt-get install -qq -y gettext
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
             gcloud auth activate-service-account
                             --key-file=${HOME}/gcloud-service-key.json
@@ -620,7 +621,7 @@ jobs:
           command: |
             docker build \
               -t ${PROJECT_NAME}/app ./client/.
-            docker tag ${PROJECT_NAME}/app 
+            docker tag ${PROJECT_NAME}/app
                    asia.gcr.io/${PROJECT_NAME}/app:${CIRCLE_SHA1}
             docker build \
               -t ${PROJECT_NAME}/api ./server/.
