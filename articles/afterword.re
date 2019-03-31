@@ -74,4 +74,4 @@
 
 @<href>{http://bit.ly/nullsuckai}
 
-//image[nullsuckai_enquete][アンケートはこちら]
+//image[nurusaku][アンケートはこちら]
