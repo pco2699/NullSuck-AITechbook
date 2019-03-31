@@ -8,6 +8,8 @@
 
 それぞれの要素について説明していきます。
 
+//pagebreak
+
 === GitHub
 世界最大のソースコード管理サービスであり
 かつもっとも使いやすいサービスです。同様のサービスとしてBitbucketやGitlabがありますが今回はGitHubを用います。
@@ -23,6 +25,8 @@ Kubernetesと名前がついていますが、今回はサクッと動かした�
 Dockerでサクッと動かすことに注力して説明していきます。
 
 GKEを使う理由は、付録にてGoogle Data Portalを用いてデータ可視化をしたく、その親和性が高いからです。
+
+//pagebreak
 
 == ローカル環境をDocker化しよう
 実際にデプロイを行う前に、まずはローカル環境でDockerで動かせるようにしましょう。
@@ -43,7 +47,9 @@ Docker化するには、次の手順をそれぞれフロント（Nuxt.js側）�
  2. docker-compose.ymlの作成
  3. 立ち上げ・動作確認
 
-=== 1. Dockerfileの作成
+//pagebreak
+
+===  Dockerfileの作成
 Dockerfileとは環境の構築手順をコードにして、毎回、同じ手順を踏まなくて済むようにするものです。
 こちらをフロントとバックそれぞれで作成していきます。
 
@@ -93,7 +99,7 @@ CMD ["prod"] // 5. 本番環境時に動作させたいコマンドを指定
 
 MySQLのDockerは今回は、既存のイメージをそのまま利用するので、Dockerfileは作成しません。
 
-=== 2. docker-compose.ymlの作成
+=== docker-compose.ymlの作成
 次に、1.で作成したdockerファイルを立ち上げて連携できるようにdocker-composeファイルを作成します。
 docker-composeとは、開発時などのローカルで複数のDockerコンテナをひとつのコマンドで立ち上げられるようにするものです。
 docker-composeファイルはプロジェクトの直下に作りましょう。
@@ -134,7 +140,7 @@ volumes:
   db_volume:
 //}
 
-=== 3. 立ち上げ動作確認
+=== 立ち上げ動作確認
 ここまでローカルのDocker関連のファイルの作成が完了しました！
 さっそく、動作確認をしてみましょう。
 コマンドラインから次のコマンドを打ち込んで、動作を確認します。
@@ -163,6 +169,8 @@ app_1        | 10:24:23 Listening on: http://172.19.0.2:3000
 実際に、@<code>{http://localhost:3000} や @<code>{http://localhost:5432} にアクセスしてみて
 画面が表示されたらOKです。
 
+//pagebreak
+
 =={docker_gcr} DockerイメージをGoogle Container Registryに登録してみよう
 作ったDockerイメージを後で説明するGKEから利用できるように、DockerイメージをGoogle Container Registryに登録してみましょう。
 本作業以降から、Google Cloud SDKを用いて作業を行いますので、@<href>{https://cloud.google.com/sdk/} を参照いただき、コマンドラインからGoogle Cloud SDKを利用できるようにしておいてください。
@@ -180,6 +188,8 @@ app_1        | 10:24:23 Listening on: http://172.19.0.2:3000
 //image[gcp_making_project3][GCPのプロジェクト作成 手順3]
 
 今回の例では、プロジェクト名は「nullsuck」、請求先アカウントは登録しています。@<fn>{gcp_account}
+
+//pagebreak
 
 === Dockerイメージをpush
 プロジェクトができたので、これでGoogle Container RegistryにDockerイメージをpushできます。
@@ -242,6 +252,7 @@ $ gcloud docker -- push asia.gcr.io/nullsuck/app
 これで、イメージをGoogle Container Registryに登録できました。
 登録したイメージは次の章で実施に動かしていきます。
 
+//pagebreak
 
 == 本番環境をKubernetes・GKEで作成しよう
 これでローカルにてDockerで動くようになりました。次は実際に本番環境にデプロイして
@@ -294,6 +305,8 @@ k8s // k8sというフォルダにまとめて管理する
 deploymentは、Podの情報を含め、Podをどのくらい複製して作るかや配置方法などを決めるファイルです。
 Podを作る際には、Pod毎にファイルを作ることも可能ですが、今回のような小さいアプリであればdeploymentファイルを作れば十分でしょう。
 
+//pagebreak
+
 //list[deployment_app][app-deployment.yml][yml]{
 apiVersion: apps/v1
 kind: Deployment # deploymentを示す
@@ -322,6 +335,8 @@ spec:
           - name: API_URL
             value: "http://api:5432"
 //}
+
+//pagebreak
 
 同様にapiもdeploymentファイルを作ります。
 
@@ -375,12 +390,9 @@ spec:
           emptyDir:
 //}
 
-appファイルと異なる点は、Podが２つあり、ひとつはapi用、ひとつはCloud SQLへアクセスするプロキシ用を用意しています。
-また、Cloud SQLにアクセスするために必要なCredentialsやユーザー名・パスワード名は、すべてGKEのSecretを通して
-取得するようにしています。
-
-GKEのSecretはのちほど、設定します。
-
+appファイルと異なる点は、apiに加えて、Cloud SQLへアクセスするプロキシPodを用意しています。
+Cloud SQLにアクセスするために必要なユーザー名などは、GKEのSecretを通して
+取得しています。GKEのSecretはのちほど設定します。
 
 次に、serviceファイルを作ります。
 //list[service_app][app-service.yml][yml]{
@@ -419,6 +431,8 @@ spec:
 //}
 
 これでKubernetes関連のファイルが全て作成できました。
+
+//pagebreak
 
 === GKE周りの設定
 実際に、GKEでKubernetesのClusterを作成してみましょう。
@@ -493,12 +507,12 @@ $ gcloud sql instances set-root-password nullsuck-db
 次に、このCloud SQLをGKEから接続できるようにするためCredientialsを設定しましょう。
 まずはCloud SQLからアクセスできるように、コンソール画面からサービスアカウントを設定します。
 
-//image[creating_service][Cloud SQLのアカウント設定 1.][scale=0.6]
+//image[creating_service][Cloud SQLのアカウント設定 1.][scale=0.5]
 //image[creating_service2][Cloud SQLのアカウント設定 2.]
-//image[creating_service3][Cloud SQLのアカウント設定 3.]
-//image[creating_service4][Cloud SQLのアカウント設定 4.]
-//image[creating_service5][Cloud SQLのアカウント設定 5.]
-//image[creating_service6][Cloud SQLのアカウント設定 6.]
+//image[creating_service3][Cloud SQLのアカウント設定 3.][scale=0.8]
+//image[creating_service4][Cloud SQLのアカウント設定 4.][scale=0.7]
+//image[creating_service5][Cloud SQLのアカウント設定 5.][scale=0.8]
+//image[creating_service6][Cloud SQLのアカウント設定 6.][scale=0.8]
 
 この手順で取得したjsonファイルをGKEのSecretsに設定します。@<fn>{gke_secrets}
 
@@ -521,6 +535,7 @@ $ kubectl create secret generic cloudsql-db-username
 
 これで、Cloud SQLにつなげる準備ができました。
 
+//pagebreak
 
 #@# === ドメイン周りの設定
 #@# #@# 書けたら書く
@@ -567,6 +582,8 @@ CircleCIでデプロイするためにサービスアカウントを設定しま
   ↓
   asia.gcr.io/${PROJECT_NAME}/api:${CIRCLECI_SHA1}
 //}
+
+//pagebreak
 
 ==== config.ymlを作成する
 config.ymlを作成していきます。

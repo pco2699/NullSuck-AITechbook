@@ -16,6 +16,8 @@ O/Rマッパ	SQLAlchemy
 ある一定の規模以上のAI/機械学習アプリを作る場合には
 機械学習部のみ今回の形式を用いてPythonでモデルを呼び出すAPIを作成し、その他の部分はGoやJavaなどの静的型付き言語で作成すると開発効率がよいです。
 
+//pagebreak
+
 === APIフレームワーク Responder
 PythonのフレームワークというとDjango, Flaskが有名ですが
 今回は、responderというフレームワークを利用します。
@@ -51,6 +53,8 @@ server/
 
 Pythonは、他のJava, C#, Goなどの言語と異なりフォルダごとにパッケージを分けず、一ファイルにクラスをまとめて書くのがスタンダードです。@<fn>{package}
 
+//pagebreak
+
 //list[python_dir][Pythonのプロジェクト構成と他言語の比較]{
 # JavaやGoの場合
 ./
@@ -80,6 +84,8 @@ Pythonは、他のJava, C#, Goなどの言語と異なりフォルダごとに�
 アプリが動かない、ということもありません。
 
 何かPythonでアプリなどを作る際は、このpipenvを利用することを強くお勧めします。@<fn>{pipenv}
+
+//pagebreak
 
 === 各モジュールの責務
 #@# もしかしたら削ってもいいかも
@@ -141,11 +147,13 @@ Alternatively, run a command inside the virtualenv with pipenv run.
 
 これでresponderが追加されます。合わせてPipfileとPipfile.lockも更新されています。
 
+//pagebreak
+
 === 簡単なAPIを作ってみよう
 GETリクエストすると、キーとバリューがhelloを書かれたjsonを返すエンドポイントを作ります。
 次のとおりapi.pyをプロジェクトに作ってみましょう。
 
-//listnum[first_api][api.py][python]{
+//list[first_api][api.py][python]{
 import responder
 api = responder.API()
 
@@ -159,14 +167,13 @@ if __name__ == '__main__':
 
 @<code>{@api.route("/hello")}のデコレータでルーティングの定義をします。
 そして、関数の中で、@<code>{resp.media}にオブジェクトを入れることで、JSONを返すことができます。
-
 flaskと違って、関数の中でreturnを書かなくてよいというのが特徴です。（falcon譲り）
 
 このapp.pyを動かすには、Pipenvで作られた仮想環境で動きます。
 Pipenvで作られた仮想環境で動かすためには、次の２つのやり方があります。
 
- 1. @<code>{pipenv shell}で仮想環境のコンソールを立ち上げて@<code>{python} コマンドをたたく 
- 2. @<code>{Pipfile} のscriptsにコマンドを書いて @<code>{pipenv run [コマンド定義名]}で動かす
+ 1. @<code>{pipenv shell}で仮想環境を立ち上げ@<code>{python} コマンドをたたく 
+ 2. @<code>{Pipfile} :scriptsにコマンドを書き @<code>{pipenv run [コマンド定義名]}で動かす
 
 今回は1.の方法で動かしてみましょう。
 
@@ -248,6 +255,8 @@ class PredictionResource:
 
 やっていることはシンプルで、リクエストのデータをもとにビジネスロジックであるServiceにデータを投げたりしています。
 
+//pagebreak
+
 == 機械学習のモデルを組み込もう
 それではいよいよ機械学習のモデルをAPIに組み込んでみましょう。
 といってもやることはシンプルです。
@@ -264,6 +273,8 @@ $ pipenv install scikit-learn pandas numpy
 ちなみにpipenvの唯一の問題なのですが、こういった機械学習系の重めのライブラリを導入すると
 @<b>{ゴリゴリに時間がかかります。（半日ほど）}
 気長に待つか待てない方は、別の方法で導入しましょう。
+
+//pagebreak
 
 === モデルを読み込むServiceを作成する
 では、実際にモデルを組み込んでみましょう。

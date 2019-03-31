@@ -1,11 +1,16 @@
 ={nuxt} NuxtでAIアプリのフロントを作ろう
 それでは、今まで@hidefknに設計してもらったAIアプリを実際に実装していきましょう。
 
+ここからは、Webエンジニアで、休日なども趣味で開発している私 @pco2699が
+@<b>{個人的な趣味と偏見も若干含んだ}技術スタックでモダンなAIアプリを実装していきます。
+
 今回のサンプルアプリケーションのコードはすべて @<href>{https://github.com/pco2699/NullSuck-AI} で見れます。
 本文の説明と合わせて参照いただけると理解が進みます。
 
 また、本アプリは @<href>{https://ai.pco2699.net} にデプロイされているので
 興味がある方はアクセスしていじってみてください。
+
+//pagebreak
 
 == 今回作るアプリ
 今回は、次のような構成でアプリを実装していきます。
@@ -85,6 +90,8 @@ Nuxt.jsと調べるとよく「サーバサイドレンダリングできるフ�
 Nuxt.jsを利用すると、このwebpackなどを含めて多くがそもそも含まれていたり、プラグインという形で提供されており
 開発が非常にしやすいのがメリットです。
 
+//pagebreak
+
 == 実際にプロジェクトを作ってみよう
 ここからは、実際に手順を追ってNuxt.jsを使ってフロントを組み立ていきます。
 なお、Nuxt.jsを動作させるためにはNode.jsの動作環境が必要です。
@@ -106,6 +113,7 @@ Node.js	10.14
 Vuetify	1.5.0
 //}
 
+//pagebreak
 
 === プロジェクト作成
 まずは、プロジェクトを作成していきましょう。
@@ -121,6 +129,7 @@ npx create-nuxt-app
 //}
 
 次のような形にダイアログが出てくるので回答していきます。
+今回は、Vuetifyを利用するので、UI frameworkはVuetifyを選択してください。
 
 //emlist{
 npx: installed 379 in 17.006s
@@ -140,6 +149,8 @@ npx: installed 379 in 17.006s
 //}
 
 これだけで、とりあえずプロジェクト構成ができてしまいます。
+
+//pagebreak
 
 === プロジェクトのTypeScript対応を行う
 2019年2月27日現在、create-nuxt-appで作成したプロジェクトはTypeScriptに対応していません。
@@ -192,6 +203,8 @@ $ yarn run dev
 おめでとうございます。
 
 //image[first_nuxt_screen][起動時の画面]
+
+//pagebreak
 
 === プロジェクト構成
 今までの手順とおりにプロジェクトを作成していくと、次のような構成になるはずです。
@@ -255,18 +268,17 @@ https://ai.pco2699.net/ -> index.vue
 == アプリのデザイン構成をVuetifyで作ろう
 まずは、デザインをもとにアプリの基礎構成を作っていきましょう。
 デザインはすでにhidefkn氏に説明いただいたとおりです。
-
 この節は、まずVueの単一ファイルコンポーネントの基本構成について説明しつつ
 次のような基礎構成を作ることを目標にします。
 
 //image[first_layout][今回の目標][scale=0.6]
 
+//pagebreak
+
 今回は、@<tt>{layouts/default.vue}をいじっていきます。
 
 default.vueにズラズラとすでにテンプレートのコードが書かれていると思いますが
-@<b>{面倒くさいのでいったん、すべて削除します（笑）}
-
-そして次の形で、初期構成を作りましょう
+@<b>{面倒くさいのでいったん、すべて削除します（笑）。}そして次の形で、初期構成を作りましょう
 //list[first_code_nuxt][default.vue]{
 <template>
   <v-app>
@@ -293,6 +305,8 @@ default.vueにズラズラとすでにテンプレートのコードが書かれ
 
 今回はだいたいの部分をVuetifyのUIパーツを利用するため@<code>{style}はほとんど利用しません。
 
+//pagebreak
+
 === テンプレート部を作る
 では、まず上記の中で@<code>{template}、つまりHTML部を作っていきましょう。
 Vuetifyは決められたコンポーネントを組み合わせていくことで、簡単にきれいなページを作れるライブラリです。
@@ -301,6 +315,8 @@ Vuetifyは決められたコンポーネントを組み合わせていくこと�
 
 今回は次の図にしたがって、コンポーネントを記載していきます。
 //image[first_vuetify][Vuetifyを用いた画面の構成]
+
+//pagebreak
 
 実際にコーディングすると次の形となります。
 //list[vuetify][default.vue][html]{
@@ -342,6 +358,8 @@ Vue.use(Vuetify, {
 
 テキストの色も @<tt>{class="white--text"}などのクラスを付与することで、色を白くできたりと
 とにかくCSSを書かなくてもさまざまな装飾、レスポンシブ対応を行うことができます。
+
+//pagebreak
 
 == 診断画面を作ろう
 次に、ワインの項目を入力する診断画面を作ってみましょう。
@@ -398,6 +416,8 @@ export default class FormCard extends Vue {}
 v-cardのclassに紐付いている@<code>{ma-2 pa-1}は、マージンとパディングの指定を表しています。
 マージンやパディングもVuetifyを使うとclassで書いてしまうことができます。
 
+//pagebreak
+
 === 診断カードをたくさん出せるようにしよう
 さきほどの診断カードを実際にページに出してみましょう。
 ページには、ディレクトリ @<tt>{pages}にある@<tt>{index.vue}に@<tt>{formcard.vue}を
@@ -439,6 +459,7 @@ v-cardのclassに紐付いている@<code>{ma-2 pa-1}は、マージンとパデ
    HTMLのタグになると、form-cardとスネークケースになるので
    気を付けてください。
 
+//pagebreak
 
 == ヌルサクグラフを実装しよう
 機械学習やデータサイエンスではお馴染み、データの可視化をNuxt.jsで実装してみましょう。
@@ -454,18 +475,18 @@ JavaScript用やフロントエンド用のグラフフレームワークはい�
 一番メジャーなのは Chart.jsだと思いますが、今回は amCharts（@<href>{https://www.amcharts.com/}）を利用します。
 理由は、次のとおりです。
 
- * 公式ページからグラフのタイプや見た目を検索でき、いいと思ったやつはコードが書かれているので@<b>{そのままコピーすれば実装できる}
- * 基本、有料ではあるが、ロゴを表示すれば無料で利用可
- * グラフの見た目がヌルサク
+ * 公式ページからグラフを検索でき、コードが書かれているので@<b>{そのままコピーすれば実装できる}
+ * 有料ではあるが、ロゴを表示すれば無料で利用可
+ * グラフがヌルサク
 
 今回、使うグラフは、このページ(@<href>{https://www.amcharts.com/demos/radial-histogram/?theme=dataviz})から持ってきます。
 
-//image[graph][Amchartsのページ]
+//image[graph][Amchartsのページ][scale=0.8]
 
-このグラフをFormCardと同じ要領でコンポーネント化してみましょう。ファイル名は@<code>{ResultChart.vue}としましょう。
+このグラフをFormCardと同じ要領でコンポーネント化してみましょう。ファイル名は@<code>{ResultChart.vue}とします。
 グラフをコンポーネント化には、amChartsにあるTypeScript/ES2015と書かれたコードをほぼそのまま使うことができます。
 
-該当のコードを、次のとおりそのままはっつけてしまいましょう。
+該当のコードを、次のとおりそのままはっつけます。
 
 //list[Result_chart][ResultChart.vue]{
   <template>
@@ -507,12 +528,12 @@ JavaScript用やフロントエンド用のグラフフレームワークはい�
 </script>
 //}
 
-@<tt>{mounted}はコンポーネントが生成されたタイミングの中でもDOMが生成されたあとに走る処理です。
-このタイミングで、amChartsのコードを走らせると、グラフが簡単に作成！といった要領です。
-
+@<tt>{mounted}はコンポーネントのDOMが生成されたあとに走る処理です。
 なお、今回のコンポーネントだけ、例外的にTypeScriptではなくJavaScriptで書いています。@<fn>{why_hs}
 
 これでヌルサクグラフが完成です！
+
+//pagebreak
 
 == APIに投げるためにVuexを実装しよう
 今までのコンポーネントは見た目はそれっぽいですが、実際のデータが注入されていません。
@@ -532,6 +553,8 @@ Nuxt.jsがよしなに、コンポーネントへの注入などをやってく�
 
 さっそく、@<tt>{store}の配下に、@<tt>{index.ts}を作ってみましょう。
 
+//pagebreak
+
 実際に作った、index.tsのstateは次のとおりです。
 
 //list[indexts][index.ts][typescipt]{
@@ -541,13 +564,8 @@ Nuxt.jsがよしなに、コンポーネントへの注入などをやってく�
 export interface WineAttribute {
   id: number
   japanese_title: string
-  english_title: string
-  value: number
-  step: number
-  max_value: number
-  min_value: number
+  // 省略
 }
-
 
 // Stateのインターフェース
 export interface State {
@@ -618,6 +636,8 @@ const getters: GetterTree<State, any> = {
 }
 //}
 
+//pagebreak
+
 === APIにアクセスするActions
 
 APIにアクセスして、なにか値を取得したい！という場合はActionsを使います。
@@ -642,6 +662,7 @@ const actions: ActionTree<State, any> = {
 nuxtServerInitという名前でActionsを定義しておくと
 事前にサーバ側でAPIからデータを取得しておいて、画面に描画しておいてくれます。
 
+//pagebreak
 
 === コンポーネントにVuexを組み込もう
 今まで説明してきたVuexの関数を実際にコンポーネントに組み込んでみましょう。
